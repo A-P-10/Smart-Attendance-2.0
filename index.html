@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Attendance App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header class="header" id="header" style="display: none;">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h2>Smart Attendance</h2>
+                </div>
+                <nav class="nav-links">
+                    <button class="btn btn--outline btn--sm" id="logout-btn">Logout</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Landing/Login Page -->
+    <div id="login-page" class="login-page">
+        <div class="container">
+            <div class="login-container">
+                <div class="login-header">
+                    <h1>Smart Attendance App</h1>
+                    <p>Face recognition-based attendance management system</p>
+                </div>
+                
+                <div class="role-selection" id="role-selection">
+                    <h3>Select Your Role</h3>
+                    <div class="role-buttons">
+                        <button class="btn btn--primary btn--lg role-btn" data-role="teacher">
+                            👨‍🏫 Teacher Login
+                        </button>
+                        <button class="btn btn--secondary btn--lg role-btn" data-role="student">
+                            👨‍🎓 Student Login
+                        </button>
+                    </div>
+                </div>
+
+                <div class="login-form-container hidden" id="login-form-container">
+                    <form class="login-form" id="login-form">
+                        <div class="form-group">
+                            <label class="form-label" for="username">Username</label>
+                            <input type="text" class="form-control" id="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="password">Password</label>
+                            <input type="password" class="form-control" id="password" required>
+                        </div>
+                        <button type="submit" class="btn btn--primary btn--full-width">Login</button>
+                        <button type="button" class="btn btn--outline btn--full-width" id="back-to-roles">Back to Role Selection</button>
+                    </form>
+                    <div class="test-credentials">
+                        <h4>Test Credentials:</h4>
+                        <p><strong>Teacher:</strong> username: teacher, password: admin123</p>
+                        <p><strong>Student:</strong> username: student, password: student123</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teacher Dashboard -->
+    <div id="teacher-dashboard" class="dashboard hidden">
+        <div class="container">
+            <div class="dashboard-header">
+                <h1>Teacher Dashboard</h1>
+                <p>Welcome back, <span id="teacher-name">Dr. Sarah Johnson</span></p>
+            </div>
+
+            <div class="dashboard-nav">
+                <button class="nav-tab active" data-tab="overview">Overview</button>
+                <button class="nav-tab" data-tab="classes">Classes</button>
+                <button class="nav-tab" data-tab="attendance">Attendance</button>
+                <button class="nav-tab" data-tab="face-setup">Face Setup</button>
+            </div>
+
+            <!-- Overview Tab -->
+            <div id="overview-tab" class="tab-content active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">2</div>
+                        <div class="stat-label">Total Classes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">2</div>
+                        <div class="stat-label">Total Students</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">67%</div>
+                        <div class="stat-label">Avg Attendance</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">1</div>
+                        <div class="stat-label">Face Enrolled</div>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h3>Recent Activity</h3>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <span class="status status--success">Present</span>
+                            <span>Alex Kumar - CS301 - Jan 10, 10:05 AM</span>
+                        </div>
+                        <div class="activity-item">
+                            <span class="status status--error">Absent</span>
+                            <span>John Doe - CS301 - Jan 10</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Classes Tab -->
+            <div id="classes-tab" class="tab-content">
+                <div class="classes-list">
+                    <div class="class-card">
+                        <h3>Data Structures & Algorithms</h3>
+                        <p><strong>Code:</strong> CS301</p>
+                        <p><strong>Schedule:</strong> Mon, Wed, Fri 10:00-11:00</p>
+                        <p><strong>Room:</strong> Room 101</p>
+                        <p><strong>Students:</strong> 2 enrolled</p>
+                        <button class="btn btn--primary btn--sm mark-attendance-btn" data-class-id="1">Mark Attendance</button>
+                    </div>
+                    <div class="class-card">
+                        <h3>Database Management Systems</h3>
+                        <p><strong>Code:</strong> CS302</p>
+                        <p><strong>Schedule:</strong> Tue, Thu 2:00-3:30</p>
+                        <p><strong>Room:</strong> Room 205</p>
+                        <p><strong>Students:</strong> 2 enrolled</p>
+                        <button class="btn btn--primary btn--sm mark-attendance-btn" data-class-id="2">Mark Attendance</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attendance Tab -->
+            <div id="attendance-tab" class="tab-content">
+                <div class="attendance-filters">
+                    <select class="form-control" id="class-filter">
+                        <option value="">All Classes</option>
+                        <option value="1">CS301 - Data Structures</option>
+                        <option value="2">CS302 - Database Systems</option>
+                    </select>
+                    <input type="date" class="form-control" id="date-filter" value="2025-01-10">
+                </div>
+                <div class="attendance-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Class</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Time</th>
+                                <th>Method</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendance-table-body">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Face Setup Tab -->
+            <div id="face-setup-tab" class="tab-content">
+                <div class="face-setup-list">
+                    <div class="student-face-card">
+                        <div class="student-info">
+                            <h4>Alex Kumar (CS2021001)</h4>
+                            <span class="status status--success">Face Enrolled</span>
+                        </div>
+                        <button class="btn btn--outline btn--sm">Re-enroll Face</button>
+                    </div>
+                    <div class="student-face-card">
+                        <div class="student-info">
+                            <h4>John Doe (CS2021002)</h4>
+                            <span class="status status--warning">Not Enrolled</span>
+                        </div>
+                        <button class="btn btn--primary btn--sm enroll-face-btn" data-student-id="3">Enroll Face</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Dashboard -->
+    <div id="student-dashboard" class="dashboard hidden">
+        <div class="container">
+            <div class="dashboard-header">
+                <h1>Student Dashboard</h1>
+                <p>Welcome, <span id="student-name">Alex Kumar</span></p>
+            </div>
+
+            <div class="student-stats">
+                <div class="stat-card">
+                    <div class="stat-number">2</div>
+                    <div class="stat-label">Enrolled Classes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">67%</div>
+                    <div class="stat-label">Attendance Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="face-status">✓</div>
+                    <div class="stat-label">Face Enrolled</div>
+                </div>
+            </div>
+
+            <div class="student-classes">
+                <h3>My Classes</h3>
+                <div class="class-card">
+                    <h4>Data Structures & Algorithms (CS301)</h4>
+                    <p>Schedule: Mon, Wed, Fri 10:00-11:00</p>
+                    <p>Room: Room 101</p>
+                    <div class="attendance-summary">
+                        <span class="status status--success">Present: 1</span>
+                        <span class="status status--error">Absent: 1</span>
+                    </div>
+                </div>
+                <div class="class-card">
+                    <h4>Database Management Systems (CS302)</h4>
+                    <p>Schedule: Tue, Thu 2:00-3:30</p>
+                    <p>Room: Room 205</p>
+                    <div class="attendance-summary">
+                        <span class="status status--success">Present: 1</span>
+                        <span class="status status--error">Absent: 0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="attendance-history">
+                <h3>Attendance History</h3>
+                <div class="attendance-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="student-attendance-table">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Face Recognition Modal -->
+    <div id="face-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Face Recognition</h3>
+                <button class="modal-close" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="camera-container">
+                    <video id="camera-video" autoplay playsinline style="display: none;"></video>
+                    <canvas id="camera-canvas" style="display: none;"></canvas>
+                    <div class="camera-placeholder">
+                        <div class="camera-icon">📸</div>
+                        <p>Camera will appear here</p>
+                        <button class="btn btn--primary" id="start-camera">Start Camera</button>
+                    </div>
+                </div>
+                <div class="face-actions">
+                    <button class="btn btn--primary" id="capture-face" style="display: none;">Capture Face</button>
+                    <button class="btn btn--secondary" id="cancel-face">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Attendance Marking Modal -->
+    <div id="attendance-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Mark Attendance</h3>
+                <button class="modal-close" id="close-attendance-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="attendance-options">
+                    <button class="btn btn--primary btn--full-width" id="face-attendance">Use Face Recognition</button>
+                    <button class="btn btn--secondary btn--full-width" id="manual-attendance">Mark Manually</button>
+                </div>
+                <div class="manual-attendance-form hidden">
+                    <h4>Manual Attendance</h4>
+                    <div id="student-list">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                    <button class="btn btn--primary" id="submit-manual-attendance">Submit Attendance</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
